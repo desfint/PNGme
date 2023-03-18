@@ -14,7 +14,8 @@ pub fn cli() {
                 .arg(arg!(<CHUNK_TYPE>)),
             Command::new("remove")
                 .arg(arg!(<PATH>))
-                .arg(arg!(<CHUNK_TYPE>)),
+                .arg(arg!(<CHUNK_TYPE>))
+                .arg(arg!([output])),
             Command::new("print").arg(arg!(<PATH>)),
         ])
         .get_matches();

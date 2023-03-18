@@ -37,11 +37,21 @@ pub fn decode(args: &ArgMatches) {
 }
 
 pub fn remove(args: &ArgMatches) {
-    let image_bytes = read(args.get_one::<String>("PATH").unwrap()).unwrap();
+    let image_path = args.get_one::<String>("PATH").unwrap();
+    let image_bytes = read(image_path).unwrap();
     let mut image = Png::try_from(&image_bytes[..]).unwrap();
     let chunk_type = args.get_one::<String>("CHUNK_TYPE").unwrap();
 
     image.remove_chunk(&chunk_type[..]).unwrap();
+
+    match args.get_one::<String>("output") {
+        Some(path) => {
+            write(path, image.as_bytes()).unwrap();
+        }
+        None => {
+            write(image_path, image.as_bytes()).unwrap();
+        }
+    }
 }
 
 pub fn print_chunks(args: &ArgMatches) {
