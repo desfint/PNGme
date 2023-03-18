@@ -31,9 +31,11 @@ pub fn decode(args: &ArgMatches) {
     let image_bytes = read(args.get_one::<String>("PATH").unwrap()).unwrap();
     let image = Png::try_from(&image_bytes[..]).unwrap();
     let chunk_type = args.get_one::<String>("CHUNK_TYPE").unwrap();
-    let chunk = image.chunk_by_type(&chunk_type[..]).unwrap();
 
-    println!("{chunk}");
+    match image.chunk_by_type(&chunk_type[..]) {
+        Some(chunk) => println!("{chunk}"),
+        None => println!("Chunk not found.")
+    }
 }
 
 pub fn remove(args: &ArgMatches) {
